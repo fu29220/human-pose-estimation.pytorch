@@ -111,7 +111,7 @@ def main():
                              config.MODEL.IMAGE_SIZE[0]))
     writer_dict['writer'].add_graph(model, (dump_input, ), verbose=False)
 
-    gpus = [int(i) for i in config.GPUS.split(',')]
+    gpus = range(len(config.GPUS.split(',')))
     model = torch.nn.DataParallel(model, device_ids=gpus).cuda()
 
     # define loss function (criterion) and optimizer

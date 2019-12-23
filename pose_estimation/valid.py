@@ -127,7 +127,7 @@ def main():
         logger.info('=> loading model from {}'.format(model_state_file))
         model.load_state_dict(torch.load(model_state_file))
 
-    gpus = [int(i) for i in range(len(config.GPUS.split(',')))]
+    gpus = range(len(config.GPUS.split(',')))
     model = torch.nn.DataParallel(model, device_ids=gpus).cuda()
 
     # define loss function (criterion) and optimizer

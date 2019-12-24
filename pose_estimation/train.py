@@ -174,7 +174,7 @@ def main():
 
         lr_scheduler.step()
 
-        if epoch % 5 == 0:
+        if epoch % 5 != 0:
             continue
 
 

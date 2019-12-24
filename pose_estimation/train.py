@@ -167,11 +167,15 @@ def main():
     best_perf = 0.0
     best_model = False
     for epoch in range(config.TRAIN.BEGIN_EPOCH, config.TRAIN.END_EPOCH):
-        lr_scheduler.step()
 
         # train for one epoch
         train(config, train_loader, model, criterion, optimizer, epoch,
               final_output_dir, tb_log_dir, writer_dict)
+
+        lr_scheduler.step()
+
+        if epoch % 5 == 0:
+            continue
 
 
         # evaluate on validation set

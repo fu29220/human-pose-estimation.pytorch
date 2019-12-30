@@ -111,7 +111,7 @@ def main():
                              config.MODEL.IMAGE_SIZE[0]))
     writer_dict['writer'].add_graph(model, (dump_input, ), verbose=False)
 
-    gpus = [int(i) for i in config.GPUS.split(',')]
+    gpus = range(len(config.GPUS.split(',')))
     model = torch.nn.DataParallel(model, device_ids=gpus).cuda()
 
     # define loss function (criterion) and optimizer
@@ -167,11 +167,15 @@ def main():
     best_perf = 0.0
     best_model = False
     for epoch in range(config.TRAIN.BEGIN_EPOCH, config.TRAIN.END_EPOCH):
-        lr_scheduler.step()
 
         # train for one epoch
         train(config, train_loader, model, criterion, optimizer, epoch,
               final_output_dir, tb_log_dir, writer_dict)
+
+        lr_scheduler.step()
+
+        if epoch % 5 != 0:
+            continue
 
 
         # evaluate on validation set
